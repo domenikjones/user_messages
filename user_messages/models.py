@@ -16,9 +16,12 @@ class Thread(models.Model):
     users = models.ManyToManyField(User, through="UserThread")
     
     objects = ThreadManager()
-    
+
     def get_absolute_url(self):
         return reverse("messages_thread_detail", kwargs={"thread_id": self.pk})
+
+    def __unicode__(self):
+        return ", ".join(unicode(user) for user in self.users.all())
     
     @property
     @cached_attribute
@@ -48,6 +51,7 @@ class UserThread(models.Model):
     
     unread = models.BooleanField()
     deleted = models.BooleanField()
+
 
 
 class Message(models.Model):
